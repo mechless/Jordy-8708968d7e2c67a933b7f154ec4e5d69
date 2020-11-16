@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div id="time"></div>
+    <button onclick="hello()">Hello</button>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+function checkTime(i) {
+  if (i < 10) {
+    i = "0" + i;
+  }
+  return i;
+}
+
+function startTime() {
+  var today = new Date();
+  var h = today.getHours();
+  var m = today.getMinutes();
+  var s = today.getSeconds();
+  // add a zero in front of numbers<10
+  m = checkTime(m);
+  s = checkTime(s);
+  document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
+  t = setTimeout(function() {
+    startTime()
+  }, 500);
+}
+startTime();
+</script>
+
+<script type="text/javascript">
+	function hello(){
+		$.ajax({
+			type : 'post',
+			url : "../back-end/hello.php",
+			success : function(response){
+
+                if(response!=''){
+                    var json = $.parseJSON(response);
+                    if(json.status=='login') alert(" Hello "+json.username+", waktu login anda "+json.waktu_login);
+                    else window.location.href = "login.html";
+                } else window.location.href = "login.html";
+
+			}
+		});
+	}
+</script>
+</html>
